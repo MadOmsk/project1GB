@@ -6,11 +6,16 @@
 
         PrintStringArray(strings);
 
-        string[] shortStrings = GetStringsByMaxLength(strings, 3);
-
-        PrintStringArray(shortStrings);
+        try
+        {
+            string[] shortStrings = GetStringsByMaxLength(strings, 3);
+            PrintStringArray(shortStrings);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
-
 
     /// <summary>Метод выводит сообщение, читает строку со ввода терминала и разделяет её на несколько строк по разделителю.
     /// message - сообщение для вывода.
@@ -28,6 +33,7 @@
     /// <summary>Метод создаёт массив строк, который состоит из элементов заданного массива длиной меньше или равно заданной максимальной длине строки.
     /// strings - исходный массив строк.
     /// maxLength - максимальная длина строки.</summary>
+    /// Бросает Exception, если в массиве нет таких строк.
     private static string[] GetStringsByMaxLength(string[] strings, int maxLength)
     {
         // Находит длину результирующего массива.
@@ -36,11 +42,14 @@
             if (strings[i].Length <= maxLength)
                 shortStringsLength++;
 
+        if (shortStringsLength == 0)
+            throw new Exception($"В этом массиве нет строк длиной меньше или равно {maxLength}");
+
         var shortStrings = new string[shortStringsLength];
         int count = 0;
 
         // Заполняет результирующий массив.
-        for (int i = 0; i < shortStrings.Length; i++)
+        for (int i = 0; i < strings.Length; i++)
         {
             if (strings[i].Length <= maxLength)
             {
@@ -56,11 +65,9 @@
     /// array - заданный массив.
     private static void PrintStringArray(string[] array)
     {
-        string result = String.Empty;
-        for (int i = 0; i < array.Length; i++)
-        {
+        string result = $"\"{array[0]}\"";
+        for (int i = 1; i < array.Length; i++)
             result = $"{result}, \"{array[i]}\"";
-        }
         Console.WriteLine(result);
     }
 }
